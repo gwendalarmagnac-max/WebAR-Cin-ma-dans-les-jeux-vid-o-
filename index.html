@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <title>WebAR — PNG + 3D</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+
+  <!-- A-Frame & MindAR -->
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+
+  <!-- Animation mixer (jouer les animations GLB/GLTF) -->
+  <script src="https://cdn.jsdelivr.net/npm/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
+
+  <!-- Votre logique -->
+  <script defer src="app.js"></script>
+
+  <!-- Plein écran + transparence -->
+  <style>
+    html, body, a-scene, canvas {
+      margin: 0; padding: 0;
+      width: 100vw; height: 100vh;
+      overflow: hidden; background: transparent;
+      position: fixed; top: 0; left: 0;
+    }
+    video {
+      position: fixed !important; top: 0 !important; left: 0 !important;
+      width: 100vw !important; height: 100vh !important;
+      object-fit: cover !important; z-index: 0 !important;
+    }
+    a-scene, canvas { z-index: 1 !important; background: transparent !important; }
+    .mindar-ui-overlay, .mindar-ui-loader { z-index: 2 !important; background: transparent !important; }
+  </style>
+</head>
+<body>
+  <a-scene
+    mindar-image="imageTargetSrc: ./targets/targets.mind;"
+    embedded
+    renderer="antialias: true; alpha: true;"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: true"
+  >
+    <a-camera look-controls="enabled:false"></a-camera>
+
+    <!-- TARGET 0 : séquence PNG + (option) 3D -->
+    <a-entity
+      mindar-image-target="targetIndex: 0"
+      ar-target-loader="pngPrefix: ./animations/target0/frame_; fps: 12; unitWidth: 1; fit: width; modelsDir: ./models/target0/; audioPrefix: ./audio/target0/audio_; audioLoop: all; audioVolume: 1; audioNonPos: true;">
+    </a-entity>
+
+        <!-- TARGET 1 : séquence PNG + (option) 3D -->
+    <a-entity
+      mindar-image-target="targetIndex: 1"
+      ar-target-loader="pngPrefix: ./animations/target1/frame_; fps: 12; unitWidth: 1; fit: width; modelsDir: ./models/target1/; audioPrefix: ./audio/target1/audio_; audioLoop: all; audioVolume: 1; audioNonPos: true;">
+    </a-entity>
+
+    <!-- TARGET 1 : uniquement 3D (exemple) -->
+    <!--
+    <a-entity
+      mindar-image-target="targetIndex: 1"
+      ar-target-loader="modelsDir: ./models/target1/; modelRot: 0 180 0; modelScale: 0.6 0.6 0.6">
+    </a-entity>
+    -->
+
+    <!-- Pour ajouter d'autres cibles, duplique un bloc ci-dessus en changeant targetIndex et chemins -->
+  </a-scene>
+</body>
+</html>
